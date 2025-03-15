@@ -3,43 +3,66 @@ import  java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);//system in menunjukan bahwa input akan diterima keyboard
+        Scanner Input = new Scanner(System.in);//system in menunjukan bahwa input akan diterima keyboard
 
-        //untuk menginput nama
-        System.out.print("Masukan nama: ");
-        String nama= scanner.nextLine(); //mengambil inputan nama dari pengguna
+        //Mengambil data menggunakan function/Method
+        String nama = GetName(Input);
+        char JenisKelamin = InputKelamin(Input);
+        int TahunLahir = InputTahunLahir(Input);
+        Input.close();
 
-        //input jenis kelamin
-        System.out.print("Masukan jenis kelamin(P/L): ");
-        char JenisKelamin = scanner.next().charAt(0);
-        scanner.nextLine(); //membersihkan newline dari inputan sebelumnya
+        //Menghitung Umur
+        int umur = HitungUmur(TahunLahir);
 
-        // input tahun lahir(harus berupa angka)
+        //Menentukan Jenis kelamin
+
+        String JenisKelaminStr = PilihjenisKelamin(JenisKelamin);
+
+        //menampilkan data
+
+        TampilkanData(nama, JenisKelamin, TahunLahir);
+
+
+    }
+    private static String GetName(Scanner input){
+        System.out.print("Masukan Nama: ");
+        return input.nextLine();
+    }
+    private static char InputKelamin(Scanner input){
+        System.out.print("Masukan jenis kelamin (P/L): ");
+        char JenisKelamin = input.next().charAt(0);
+        input.nextLine();
+        return  JenisKelamin;
+    }
+
+    private static int InputTahunLahir(Scanner Input){
         System.out.print("Masukan tahun lahir: ");
-        int Tahun_lahir = scanner.nextInt();
-        scanner.close(); // menutup object scan unutk mencegah kebocoran memori
-        //Menghitung Umur berdasarkan tahun lahir
-        int tahunSekarang = LocalDate.now().getYear(); //Mengambil tahun ini dengan menggunakan API localDate
-        int Umur = tahunSekarang - Tahun_lahir; //mengurangi tahun saat ini dengan inputan tahun lahir kita untuk mendapatkan umur kita
+        return Input.nextInt();
+    }
 
-        //Menentukan jenis kelamin berdasarkan input
-        //Menggunakan validasi
-        String jenisKelaminStr = "";
+    //fungsi untuk mengambil inputan tahun lahir kita
+    private static  int HitungUmur(int TahunLahir){
+        int TahunSekarang = LocalDate.now().getYear();
+        return TahunSekarang - TahunLahir;
+    }
 
-        if (JenisKelamin == 'L'|| JenisKelamin == 'l'){
-            jenisKelaminStr = "laki-laki";
+    //fungsi menentukan jenis kelamin
+    private static String PilihjenisKelamin(char JenisKelamin){
+        if (JenisKelamin == 'L' || JenisKelamin == 'l'){
+            return "Laki-laki";
         } else if (JenisKelamin == 'P' || JenisKelamin == 'p') {
-            jenisKelaminStr = "Perempuan";
-
+            return "Perempuan";
         }
         else {
-            jenisKelaminStr = "Tidak Diketahui";
+            return "Tidak diketahui";
         }
+    }
 
-        //Menampilkan output data diri
+    //fungsi menampilkan nama
+    private static void TampilkanData(String nama, char kelamin, int umur){
         System.out.println("\nData Diri:");
-        System.out.println("Nama            : "+nama);
-        System.out.println("Jenis Kelamin   : "+ jenisKelaminStr);
-        System.out.println("Umur            : "+Umur+"tahun");
+        System.out.println("Nama            : " + nama);
+        System.out.println("Jenis Kelamin   : " + kelamin);
+        System.out.println("Umur            : " + umur + " tahun");
     }
 }
