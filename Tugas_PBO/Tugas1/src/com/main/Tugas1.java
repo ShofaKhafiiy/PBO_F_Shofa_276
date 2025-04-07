@@ -1,15 +1,25 @@
-package Tugas_1;
+package com.main;
+
+import com.admin.Admin;
+import com.admin.Mahasiswa;
+
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+
+
 public class Tugas1 {
     public static void main(String[] args) {
-        int pilih, MaxPercobaan, i;
-        String UserAdmin,PassAdmin,UserMaha;
-        Long PassMaha;
 
         Scanner InputPengguna = new Scanner(System.in);
+        Admin admin = new Admin("Admin276", "Password276");
+        Mahasiswa maha = new Mahasiswa("Shofa Khaifidn",202410370110276L );
+
+
+        int MaxPercobaan = 3;
+        int pilih = 0;
+        int i;
+
         while (true) {
             System.out.println("Pilih login:");
             System.out.println("1. Admin.");
@@ -40,23 +50,24 @@ public class Tugas1 {
             return;
         }
 
-        MaxPercobaan = 3;
+
 
         if (pilih == 1){
             for (i = 1; i <= MaxPercobaan ; i++){
                 System.out.print("Masukan Username: ");
-                UserAdmin = InputPengguna.nextLine();
+                String adminuser = InputPengguna.nextLine();
 
                 System.out.print("Masukan Password: ");
-                PassAdmin = InputPengguna.nextLine();
+                String adminPass = InputPengguna.nextLine();
 
-                if (UserAdmin.startsWith("Admin276") && PassAdmin.startsWith("Password276") ){
+                if (admin.login(adminuser,adminPass)){
                     System.out.println("Login Berhasil :)");
+                    admin.display();
                     InputPengguna.close();
                     return;
                 }
                 else {
-                    System.out.println("Kata sandi atau username salah!\nulangi lagi!\nAnda memiliki" + (MaxPercobaan -1) + "kesempatan");
+                    System.out.println("Kata sandi atau username salah!\nulangi lagi!\nAnda memiliki" + (MaxPercobaan -i) + "kesempatan");
                 }
                 if( i == MaxPercobaan){
                     System.out.println("Kesempatan anda habis!\nUlangi lagi nanti!");
@@ -68,16 +79,16 @@ public class Tugas1 {
             for (i =1; i<=MaxPercobaan; i++){
                 System.out.println("Login mahasiswa berhasil");
                 System.out.print("Masukan Nama: ");
-                UserMaha = InputPengguna.nextLine();
+               String UserMaha = InputPengguna.nextLine();
                 System.out.print("Masukan NIM: ");
                 if(InputPengguna.hasNextLong()) {
-                    PassMaha = InputPengguna.nextLong();
+                    long PassMaha = InputPengguna.nextLong();
                     InputPengguna.nextLine();
 
-                    long validPass = 202410370110276L;
-                    if (UserMaha.startsWith("Shofa Khafidin") && PassMaha == validPass) {
-                        System.out.println("Nama anda: " + UserMaha);
-                        System.out.println("Nim anda: " + PassMaha);
+
+                    if (maha.login(UserMaha,PassMaha)) {
+                        System.out.println("Login Mahasiswa berhasil");
+                        maha.displayMaha();
                         break;
                     } else {
                         System.out.println("Kata sandi atau username salah!\nulangi lagi!\nAnda memiliki " + (MaxPercobaan - 1) + " kesempatan");
@@ -85,7 +96,7 @@ public class Tugas1 {
                 }
                 else {
                     System.out.println("Nim harus berupa angka!");
-                    System.out.println("ulangi lagi!\nAnda memiliki " + (MaxPercobaan - 1) + " kesempatan");
+                    System.out.println("ulangi lagi!\nAnda memiliki " + (MaxPercobaan - i) + " kesempatan");
                     InputPengguna.nextLine();
                 }
 
