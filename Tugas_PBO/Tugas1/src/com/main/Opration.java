@@ -10,7 +10,40 @@ import java.util.Scanner;
 
 public class Opration {
     private static final Scanner InputPengguna = new Scanner(System.in);
-    private static final int MaxPercobaan = 3;
+    private static final int MaxPercobaan = 5;
+
+
+
+    public static void main(String[] args) {
+        Admin admin = new Admin("Admin", "Password123");
+        Mahasiswa maha = new Mahasiswa("Shofa Khaifidn", 202410370110276L);
+
+
+        while (true) {
+            System.out.println("Pilih login:");
+            System.out.println("1. Admin.");
+            System.out.println("2. Mahasiswa.");
+            System.out.println("3. Keluar Menu.");
+            System.out.print("Pilih menu (1-3): ");
+
+            int pilih = getValidChoice();
+
+            switch (pilih){
+                case 1 -> {
+                    handleLoginAdmin(admin);
+                    return;
+                }
+                case 2 -> handleLoginMahasiswa(maha);
+                case 3 -> {
+                    System.out.println("Keluar dari sistem. Terima Kasih!");
+                    InputPengguna.close();
+                    return;
+                }
+                default -> System.out.println("Pilihan tidak valid");
+            }
+
+        }
+    }
 
 
     private static  int getValidChoice() {
@@ -27,49 +60,69 @@ public class Opration {
     }
 
 
-    private static void handleLogin(User user){
+    private static void handleLoginMahasiswa(Mahasiswa mahasiswa){
+        for (int i = 1; i <=MaxPercobaan; i++){
+            System.out.print("Masukan Nama Mahasiswa: ");
+            String nama= InputPengguna.nextLine().trim();
+            System.out.print("Masukan NIM anda: ");
+            String nim = InputPengguna.nextLine().trim();
 
-        for(int i = 1; i <= MaxPercobaan; i++){
-            if (user.login()){
-                System.out.println("Login berhasil");
-                user.afterLogin();
-                return;
+
+            if (!isNumeric(nim)){
+                System.out.printf("Nim harus berupa angka. Percobaan tersisa: %d", MaxPercobaan-i);
+                continue;
             }
 
+            if (nim.length()>=15){
+                System.out.printf("Nim maksimal 15 digit! Percobaan tersisa: %d", MaxPercobaan-i);
+                continue;
+            }
+
+            long nimInput = Long.parseLong(nim);
+            mahasiswa.setName(nama);
+            mahasiswa.setNim(nimInput);
+
+            if (mahasiswa.login()){
+                System.out.println("Login mahasiswa berhasil");
+                mahasiswa.afterLogin();
+                return;
+            }
             else{
-                System.out.printf("Login gagal. Percobaan tersisa: %d\n", MaxPercobaan-i);
+                System.out.printf("Login gagal. Percobaan tersisa: %d", MaxPercobaan - i);
             }
         }
 
+        System.out.println("Kesempatan anda habis. Silahkan coba lagi nanti.");
+    }
+
+    private static void handleLoginAdmin(Admin admin) {
+
+        for (int i = 1; i <= MaxPercobaan; i++) {
+            System.out.print("Masukan Username: ");
+            String inputAdmin = InputPengguna.nextLine().trim();
+            System.out.print("Masukan Password: ");
+            String passAdmin = InputPengguna.nextLine().trim();
+
+            admin.setPassAdmin(passAdmin);
+            admin.setName(inputAdmin);
+
+            if (admin.login()) {
+                System.out.println("Login Admin berhasil!");
+                admin.afterLogin();
+                return;
+            } else {
+                System.out.printf("Login gagal. Percobaan tersisa: %d\n", MaxPercobaan - i);
+            }
+
+        }
+        System.out.println("Kesempatan habis. silahkan coba lagi nanti");
+    }
+
+    private static boolean isNumeric(String str){
+        return str.matches("\\d+");
     }
 
 
-    public static void main(String[] args) {
-        Admin admin = new Admin("Admin276", "Password276");
-        Mahasiswa maha = new Mahasiswa("Shofa Khaifidn", 202410370110276L);
 
-        int i;
-        while (true) {
-            System.out.println("Pilih login:");
-            System.out.println("1. Admin.");
-            System.out.println("2. Mahasiswa.");
-            System.out.println("3. Keluar Menu.");
-            System.out.print("Pilih menu (1-3): ");
-
-            int pilih = getValidChoice();
-
-                switch (pilih){
-                    case 1 -> handleLogin(admin);
-                    case 2 -> handleLogin(maha);
-                    case 3 -> {
-                        System.out.println("Keluar dari sistem. Terima Kasih!");
-                        InputPengguna.close();
-                        return;
-                    }
-                    default -> System.out.println("Pilihan tidak valid");
-                }
-
-                }
-            }
 
         }

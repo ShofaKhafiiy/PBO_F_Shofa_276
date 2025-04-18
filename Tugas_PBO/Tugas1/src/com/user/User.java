@@ -9,16 +9,18 @@ public abstract class User {
         this.role = role;
     }
 
-    protected  final String getRole(){
+    public  final String getRole(){
         return this.role;
     }
 
-    protected final String getName(){
+    public final String getName(){
         return this.name;
     }
 
-    protected void setName(String name){
-        this.name = name;
+    public void setName(String name){
+        if(name != null && !name.isEmpty()){
+            this.name = name;
+        }
     }
 
 

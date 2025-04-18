@@ -4,26 +4,33 @@ public class Admin extends User{
 
 
     private static int jumlahAdmin = 0;
-    private final String passAdmin;
+    private  String passAdmin;
 
     public Admin(String username, String passAdmin){
-        super(username, "admin");
+        super(username, "Admin");
         this.passAdmin = passAdmin;
         jumlahAdmin++;
     }
 
     public Admin(String nama){
-        this(nama, "admin123");
+        this(nama, "Password123");
     }
 
     public String getPassAdmin(){
         return this.passAdmin;
     }
 
+    public void setPassAdmin(String password){
+       if (password != null && !password.isEmpty()){
+            this.passAdmin = password;
+       }
+    }
+
+
 
     @Override
     public boolean login(){
-        return getName().equalsIgnoreCase("Admin") && getPassAdmin().equals("Admin123");
+        return getName().equals("Admin") && getPassAdmin().equals("Password123");
     }
 
 
@@ -43,6 +50,7 @@ public class Admin extends User{
         displayInfo();
         aksesPanel();
         System.out.println("Jumlah Admin: "+ getJumlahAdmin());
+
     }
 
     @Override
