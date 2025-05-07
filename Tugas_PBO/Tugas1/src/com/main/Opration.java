@@ -16,6 +16,7 @@ public class Opration {
 
     public static void main(String[] args) {
         Admin admin = new Admin("Admin", "Password123");
+
         Mahasiswa maha = new Mahasiswa("Shofa Khaifidn", 202410370110276L);
 
 
@@ -33,7 +34,10 @@ public class Opration {
                     handleLoginAdmin(admin);
                     return;
                 }
-                case 2 -> handleLoginMahasiswa(maha);
+                case 2 ->{
+                    handleLoginMahasiswa(maha);
+                    return;
+                }
                 case 3 -> {
                     System.out.println("Keluar dari sistem. Terima Kasih!");
                     InputPengguna.close();
@@ -69,12 +73,12 @@ public class Opration {
 
 
             if (!isNumeric(nim)){
-                System.out.printf("Nim harus berupa angka. Percobaan tersisa: %d", MaxPercobaan-i);
+                System.out.printf("Nim harus berupa angka. Percobaan tersisa: %d\n", MaxPercobaan-i);
                 continue;
             }
 
-            if (nim.length()>=15){
-                System.out.printf("Nim maksimal 15 digit! Percobaan tersisa: %d", MaxPercobaan-i);
+            if (nim.length()>15){
+                System.out.printf("Nim maksimal 15 digit! Percobaan tersisa: %d\n", MaxPercobaan-i);
                 continue;
             }
 

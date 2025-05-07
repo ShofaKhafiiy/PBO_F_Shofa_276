@@ -3,13 +3,13 @@ package com.user;
 public class Admin extends User{
 
 
-    private static int jumlahAdmin = 0;
+
     private  String passAdmin;
 
     public Admin(String username, String passAdmin){
-        super(username, "Admin");
+        super(username);
         this.passAdmin = passAdmin;
-        jumlahAdmin++;
+
     }
 
     public Admin(String nama){
@@ -34,10 +34,7 @@ public class Admin extends User{
     }
 
 
-    public static int getJumlahAdmin(){
-        return jumlahAdmin;
 
-    }
 
 
 
@@ -49,7 +46,6 @@ public class Admin extends User{
     public void afterLogin(){
         displayInfo();
         aksesPanel();
-        System.out.println("Jumlah Admin: "+ getJumlahAdmin());
 
     }
 

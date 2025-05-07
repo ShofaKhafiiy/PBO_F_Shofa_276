@@ -4,19 +4,17 @@ public class Mahasiswa extends User {
 
 
     private long nim;
-    private static int jumlahMahasiswa = 0;
 
-    private String name;
+
+
 
     public Mahasiswa(String userMaha, long nim) {
-        super(userMaha, "Mahasiswa");
+        super(userMaha);
         this.nim = nim;
-        jumlahMahasiswa++;
+
     }
 
-    public Mahasiswa(String name) {
-        this(name, 0L);
-    }
+
 
 
     public long getNim() {
@@ -29,19 +27,17 @@ public class Mahasiswa extends User {
 
 
 
-    @Override
+   @Override
     public boolean login(){
         return getName().equals("Shofa Khafidin") && this.nim == 202410370110276L;
     }
 
-    public static  int getJumlahMahasiswa(){
-        return jumlahMahasiswa;
-    }
+
 
     @Override
     public void afterLogin(){
         displayInfo();
-        System.out.println("Jumlah mahasiswa: "+getJumlahMahasiswa());
+
     }
 
     @Override
