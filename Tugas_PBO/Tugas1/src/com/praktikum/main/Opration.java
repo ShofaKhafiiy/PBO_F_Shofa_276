@@ -1,6 +1,8 @@
-package com.main;
+package com.praktikum.main;
 
-import com.user.*;
+import com.praktikum.users.*;
+
+
 
 
 import java.util.Scanner;
@@ -15,9 +17,9 @@ public class Opration {
 
 
     public static void main(String[] args) {
-        Admin admin = new Admin("Admin", "Password123");
+        User admin = new Admin("Admin", "Password123");
 
-        Mahasiswa maha = new Mahasiswa("Shofa Khaifidn", 202410370110276L);
+        User maha = new Mahasiswa("Shofa Khaifidn", 202410370110276L);
 
 
         while (true) {
@@ -64,7 +66,7 @@ public class Opration {
     }
 
 
-    private static void handleLoginMahasiswa(Mahasiswa mahasiswa){
+    private static void handleLoginMahasiswa(User mahasiswa){
         for (int i = 1; i <=MaxPercobaan; i++){
             System.out.print("Masukan Nama Mahasiswa: ");
             String nama= InputPengguna.nextLine().trim();
@@ -84,7 +86,7 @@ public class Opration {
 
             long nimInput = Long.parseLong(nim);
             mahasiswa.setName(nama);
-            mahasiswa.setNim(nimInput);
+            ((Mahasiswa) mahasiswa).setNim(nimInput);
 
             if (mahasiswa.login()){
                 System.out.println("Login mahasiswa berhasil");
@@ -99,15 +101,16 @@ public class Opration {
         System.out.println("Kesempatan anda habis. Silahkan coba lagi nanti.");
     }
 
-    private static void handleLoginAdmin(Admin admin) {
+    private static void handleLoginAdmin(User admin) {
 
         for (int i = 1; i <= MaxPercobaan; i++) {
             System.out.print("Masukan Username: ");
             String inputAdmin = InputPengguna.nextLine().trim();
             System.out.print("Masukan Password: ");
-            String passAdmin = InputPengguna.nextLine().trim();
+            String passAdmin = InputPengguna.nextLine().trim(); 
 
-            admin.setPassAdmin(passAdmin);
+            ((Admin) admin).setPassAdmin(passAdmin);
+            
             admin.setName(inputAdmin);
 
             if (admin.login()) {

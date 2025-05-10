@@ -1,4 +1,4 @@
-package com.user;
+package com.praktikum.users;
 
 public abstract class User {
     private String name;
@@ -25,10 +25,15 @@ public abstract class User {
     public abstract boolean login();
     public abstract void afterLogin();
 
+    //menambahkan abstract display menu
+    public abstract void displayMenu();
+
     public void displayInfo(){
         System.out.println("Nama: "+this.name);
 
     }
+
+    
 
 
 }
