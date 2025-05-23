@@ -1,152 +1,88 @@
 package com.praktikum.users;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import com.praktikum.actions.MahasiswaActions;
 
+import java.util.Scanner;
+
 public class Mahasiswa extends User implements MahasiswaActions {
-    final ArrayList<String> laporan = new ArrayList<>();
-    final Scanner scanner = new Scanner(System.in);
     private long nim;
-    private String namaBarang ,deskripsi,   lokasi;
-    
-   
+    final Scanner scanner = new Scanner(System.in);
 
-
-
-
-    public Mahasiswa(String userMaha, long nim) {
-        super(userMaha);
+    public Mahasiswa(String nama, long nim) {
+        super(nama);
         this.nim = nim;
-
-    }
-
-
-    //memberikan getter dan setter
-
-
-    public long getNim() {
-        return this.nim;
-    }
-    
-    public String getNamaBarang(){
-        return this.namaBarang;
-    }
-
-    public String getDeskripsi(){
-        return this.deskripsi;
-    }
-
-    public String getLokasi(){
-        return this.lokasi;
     }
 
     public void setNim(long nim) {
-        this.nim = nim;}
-
-    
-    public void setNamaBarang(String newNamaBarang){
-        this.namaBarang = newNamaBarang;
+        this.nim = nim;
     }
 
-    public void setDeskripsi(String newDeskripsi){
-        this.deskripsi = newDeskripsi;
+    public long getNim() {
+        return nim;
     }
-
-    public void setLokasi(String newLokasi){
-        this.lokasi = newLokasi;
-    }
-
-    
-//getter setter selesai
-
-
-   @Override
-    public boolean login(){
-        return getName().equals("Shofa Khafidin") && this.nim == 202410370110276L;
-    }
-
-
 
     @Override
-    public void afterLogin(){
+    public boolean login() {
+        return getName().equals("Shofa Khaifidn") && this.nim == 202410370110276L;
+    }
+
+    @Override
+    public void afterLogin() {
         displayInfo();
         displayMenu();
-
     }
 
     @Override
-    public void displayInfo(){
+    public void displayInfo() {
         super.displayInfo();
-        System.out.println("NIM: "+ getNim());
-        System.out.println("Status Mahasiswa Aktif");
+        System.out.println("NIM: " + getNim());
+        System.out.println("Status: Mahasiswa Aktif");
     }
 
     @Override
     public void displayMenu() {
-        
         int choice;
         do {
             System.out.println("\n=== Menu Mahasiswa ===");
-            System.out.println("1. Laporkan Barang Temuan/Hilang");
-            System.out.println("2. Lihat Daftar Laporan");
+            System.out.println("1. Laporkan Barang");
+            System.out.println("2. Lihat Laporan");
             System.out.println("0. Logout");
             System.out.print("Pilih menu: ");
+
+            while (!scanner.hasNextInt()) {
+                System.out.print("Masukkan angka yang valid (0-2): ");
+                scanner.next();
+            }
+
             choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
+
             switch (choice) {
-                case 1:
-                    reportItem();
-                    break;
-                case 2:
-                    viewReportedItems();
-                    break;
-                case 0:
-                    System.out.println("Logout berhasil.");
-                    break;
-                default:
-                    System.out.println("Pilihan tidak valid.");
+                case 1 -> reportItem();
+                case 2 -> viewReportedItems();
+                case 0 -> System.out.println("Logout...");
+                default -> System.out.println("Pilihan tidak valid.");
             }
         } while (choice != 0);
     }
 
     @Override
     public void reportItem() {
-        
         System.out.print("Nama Barang: ");
-         String namaBarang= scanner.nextLine();
-         setNamaBarang(namaBarang);
-        System.out.print("Deskripsi Barang: ");
-         deskripsi = scanner.nextLine();
-         setDeskripsi(deskripsi);
-        System.out.print("Lokasi Terakhir/Ditemukan: ");
-         lokasi = scanner.nextLine();
-         setLokasi(lokasi);
+        String namaBarang = scanner.nextLine();
+        System.out.print("Deskripsi: ");
+        String deskripsi = scanner.nextLine();
+        System.out.print("Lokasi: ");
+        String lokasi = scanner.nextLine();
 
-         String laporanBaru = "Nama: " + namaBarang + ", Deskripsi: " + deskripsi + ", Lokasi: " + lokasi;
-        laporan.add(laporanBaru);
-
-
-        System.out.println(">> Laporan berhasil dikirim. <<");
+        System.out.println(">> Laporan Terkirim:");
+        System.out.println("Nama: " + namaBarang);
+        System.out.println("Deskripsi: " + deskripsi);
+        System.out.println("Lokasi: " + lokasi);
     }
 
     @Override
-    public  void viewReportedItems() {
-        if (laporan.isEmpty()) {
-            System.out.println("Belum ada laporan.");
-        } else {
-            System.out.println(">> Daftar Laporan <<");
-            for (String lapor : laporan) {
-                System.out.println("- " + lapor);
-            }
-        }
+    public void viewReportedItems() {
+        System.out.println(">> (Simulasi) Tidak ada laporan tersimpan karena belum pakai ArrayList.");
     }
-
-    /* private static String laporanBaru(){
-        System.out.println(">> Laporan Anda. <<");
-    } */
-
-    }
-
-
+}

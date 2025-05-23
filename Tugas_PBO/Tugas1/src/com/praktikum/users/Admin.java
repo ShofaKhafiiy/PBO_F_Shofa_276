@@ -19,9 +19,7 @@ public class Admin extends User implements AdminActions{
 
     }
 
-    public Admin(String nama){
-        this(nama, "Password123");
-    }
+
 
     public String getPassAdmin(){
         return this.passAdmin;
