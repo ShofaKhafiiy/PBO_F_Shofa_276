@@ -1,29 +1,36 @@
 package com.praktikum.users;
 
 import com.praktikum.actions.MahasiswaActions;
+import com.praktikum.models.Item;
+import com.praktikum.storage.SystemStorage;
 
 import java.util.Scanner;
 
 public class Mahasiswa extends User implements MahasiswaActions {
     private long nim;
-    final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
-    public Mahasiswa(String nama, long nim) {
-        super(nama);
+    public Mahasiswa(String name, long nim) {
+        super(name);
         this.nim = nim;
+    }
+
+    public long getNim() {
+        return this.nim;
     }
 
     public void setNim(long nim) {
         this.nim = nim;
     }
 
-    public long getNim() {
-        return nim;
-    }
-
     @Override
     public boolean login() {
-        return getName().equals("Shofa Khaifidn") && this.nim == 202410370110276L;
+        for (User u : SystemStorage.userList) {
+            if (u instanceof Mahasiswa m) {
+                if (m.getName().equals(getName()) && m.getNim() == getNim()) return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -35,8 +42,7 @@ public class Mahasiswa extends User implements MahasiswaActions {
     @Override
     public void displayInfo() {
         super.displayInfo();
-        System.out.println("NIM: " + getNim());
-        System.out.println("Status: Mahasiswa Aktif");
+        System.out.println("NIM: " + this.nim);
     }
 
     @Override
@@ -47,20 +53,17 @@ public class Mahasiswa extends User implements MahasiswaActions {
             System.out.println("1. Laporkan Barang");
             System.out.println("2. Lihat Laporan");
             System.out.println("0. Logout");
-            System.out.print("Pilih menu: ");
-
+            System.out.print("Pilihan: ");
             while (!scanner.hasNextInt()) {
-                System.out.print("Masukkan angka yang valid (0-2): ");
+                System.out.println("Input harus angka!");
                 scanner.next();
             }
-
             choice = scanner.nextInt();
             scanner.nextLine();
-
             switch (choice) {
                 case 1 -> reportItem();
                 case 2 -> viewReportedItems();
-                case 0 -> System.out.println("Logout...");
+                case 0 -> System.out.println("Logout berhasil.");
                 default -> System.out.println("Pilihan tidak valid.");
             }
         } while (choice != 0);
@@ -69,20 +72,35 @@ public class Mahasiswa extends User implements MahasiswaActions {
     @Override
     public void reportItem() {
         System.out.print("Nama Barang: ");
-        String namaBarang = scanner.nextLine();
-        System.out.print("Deskripsi: ");
+        String nama = scanner.nextLine();
+        System.out.print("Deskripsi Barang: ");
         String deskripsi = scanner.nextLine();
-        System.out.print("Lokasi: ");
+        System.out.print("Lokasi Terakhir/Ditemukan: ");
         String lokasi = scanner.nextLine();
 
-        System.out.println(">> Laporan Terkirim:");
-        System.out.println("Nama: " + namaBarang);
-        System.out.println("Deskripsi: " + deskripsi);
-        System.out.println("Lokasi: " + lokasi);
+        Item item = new Item(nama, deskripsi, lokasi);
+        SystemStorage.reportedItems.add(item);
+
+        System.out.println(">> Laporan berhasil dikirim.");
     }
 
     @Override
     public void viewReportedItems() {
-        System.out.println(">> (Simulasi) Tidak ada laporan tersimpan karena belum pakai ArrayList.");
+        System.out.println("\n=== Daftar Barang Ditemukan ===");
+        if (SystemStorage.reportedItems.isEmpty()) {
+            System.out.println("Belum ada laporan barang.");
+            return;
+        }
+
+        System.out.printf("%-4s | %-20s | %-30s | %-20s\n", "No", "Nama Barang", "Deskripsi", "Lokasi");
+        System.out.println("---------------------------------------------------------------------------------");
+
+        int index = 1;
+        for (Item item : SystemStorage.reportedItems) {
+            if (item.getStatus().equalsIgnoreCase("Reported")) {
+                System.out.printf("%-4d | %-20s | %-30s | %-20s\n", index++, item.getItemName(), item.getDescription(), item.getLocation());
+            }
+        }
     }
+
 }

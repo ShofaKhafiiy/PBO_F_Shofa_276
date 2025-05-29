@@ -1,83 +1,74 @@
 package com.praktikum.main;
 
 import com.praktikum.users.*;
+import com.praktikum.storage.SystemStorage;
 
 import java.util.Scanner;
 
 public class Opration {
-    private static final Scanner InputPengguna = new Scanner(System.in);
-    private static final int MaxPercobaan = 5;
+    static final Scanner sc = new Scanner(System.in);
+    static final int MaxPercobaan = 3;
 
     public static void main(String[] args) {
-        User admin = new Admin("Admin", "Password123");
-        User maha = new Mahasiswa("Shofa Khaifidn", 202410370110276L);
-
+        SystemStorage.userList.add(new Admin("Admin", "Password123"));
+        SystemStorage.userList.add(new Mahasiswa("Shofa Khaifidn", 202410370110276L)); //
         while (true) {
-            System.out.println("\n=== Sistem Login ===");
+            System.out.println("\nLogin sebagai:");
             System.out.println("1. Admin");
             System.out.println("2. Mahasiswa");
             System.out.println("3. Keluar");
-            System.out.print("Pilih menu (1-3): ");
-
+            System.out.print("Pilih: ");
             int pilih = getValidChoice();
-
             switch (pilih) {
-                case 1 -> handleLogin(admin);
-                case 2 -> handleLogin(maha);
-                case 3 -> {
-                    System.out.println("Keluar dari sistem. Terima Kasih!");
-                    InputPengguna.close();
-                    return;
-                }
+                case 1 -> loginAdmin();
+                case 2 -> loginMahasiswa();
+                case 3 -> System.exit(0);
                 default -> System.out.println("Pilihan tidak valid.");
             }
         }
     }
 
-    private static int getValidChoice() {
-        while (!InputPengguna.hasNextInt()) {
-            System.out.print("Inputan harus angka (1-3): ");
-            InputPengguna.next();
+    static int getValidChoice() {
+        while (!sc.hasNextInt()) {
+            System.out.println("Harus angka!");
+            sc.next();
         }
-        int val = InputPengguna.nextInt();
-        InputPengguna.nextLine(); // clear buffer
-        return val;
+        return sc.nextInt();
     }
 
-    private static void handleLogin(User user) {
-        for (int i = 1; i <= MaxPercobaan; i++) {
-            System.out.print("Masukkan Nama: ");
-            String nama = InputPengguna.nextLine().trim();
-            if (nama.isEmpty()) {
-                System.out.printf("Nama tidak boleh kosong! Sisa percobaan: %d\n", MaxPercobaan - i);
-                continue;
-            }
-            user.setName(nama);
-
-            if (user instanceof Admin admin) {
-                System.out.print("Masukkan Password: ");
-                String pass = InputPengguna.nextLine().trim();
-                admin.setPassAdmin(pass);
-            }
-
-            if (user instanceof Mahasiswa mahasiswa) {
-                System.out.print("Masukkan NIM: ");
-                String nimStr = InputPengguna.nextLine().trim();
-                if (!nimStr.matches("\\d+") || nimStr.length() > 15) {
-                    System.out.printf("NIM tidak valid! Sisa percobaan: %d\n", MaxPercobaan - i);
-                    continue;
-                }
-                mahasiswa.setNim(Long.parseLong(nimStr));
-            }
-
-            if (user.login()) {
-                System.out.println("Login berhasil.");
-                user.afterLogin();
+    static void loginAdmin() {
+        sc.nextLine();
+        for (int i = 0; i < MaxPercobaan; i++) {
+            System.out.print("Username: ");
+            String user = sc.nextLine();
+            System.out.print("Password: ");
+            String pass = sc.nextLine();
+            Admin admin = new Admin(user, pass);
+            if (admin.login()) {
+                admin.afterLogin();
                 return;
-            } else {
-                System.out.printf("Login gagal. Sisa percobaan: %d\n", MaxPercobaan - i);
             }
+            System.out.println("Gagal login.");
         }
-        System.out.println("Kesempatan habis. Coba lagi nanti.");
+    }
+
+    static void loginMahasiswa() {
+        sc.nextLine();
+        for (int i = 0; i < MaxPercobaan; i++) {
+            System.out.print("Nama: ");
+            String nama = sc.nextLine();
+            System.out.print("NIM: ");
+            try {
+                long nim = Long.parseLong(sc.nextLine());
+                Mahasiswa m = new Mahasiswa(nama, nim);
+                if (m.login()) {
+                    m.afterLogin();
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("NIM harus angka.");
+            }
+            System.out.println("Gagal login.");
+        }
     }
 }
