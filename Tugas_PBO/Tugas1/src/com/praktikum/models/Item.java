@@ -1,17 +1,15 @@
 package com.praktikum.models;
 
-// Class Item merepresentasikan barang yang dilaporkan oleh Mahasiswa
 public class Item {
     private final String itemName;
-    private String description;
-    private String location;
-    private String status; // "Reported" atau "Claimed"
+    private final String description;
+    private final String location;
+    private String status = "Reported";
 
     public Item(String itemName, String description, String location) {
         this.itemName = itemName;
         this.description = description;
         this.location = location;
-        this.status = "Reported";
     }
 
     public String getItemName() {
